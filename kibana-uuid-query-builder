@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>UUID Formatter Cards</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center px-4 py-10">
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl w-full">
+    
+    <!-- Card 1: Paste UUIDs -->
+    <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+      <div class="bg-gradient-to-r from-yellow-400 to-orange-500 p-6 text-center">
+        <div class="bg-white w-16 h-16 mx-auto rounded-full flex items-center justify-center text-yellow-600 text-3xl shadow-lg">📥</div>
+      </div>
+      <div class="p-6">
+        <h2 class="text-xl font-semibold text-gray-800 text-center mb-2">Paste UUIDs</h2>
+        <p class="text-sm text-gray-500 text-center mb-4">Enter UUIDs (one per line)</p>
+        <textarea id="input" rows="10" placeholder="uuid-1\nuuid-2..." class="w-full p-3 border border-gray-300 rounded-lg resize-y focus:ring-2 focus:ring-yellow-400 focus:outline-none"></textarea>
+      </div>
+    </div>
+
+    <!-- Card 2: Output + Copy -->
+    <div class="bg-white rounded-2xl shadow-lg overflow-hidden relative">
+      <div class="bg-gradient-to-r from-purple-500 to-pink-500 p-6 text-center">
+        <div class="bg-white w-16 h-16 mx-auto rounded-full flex items-center justify-center text-purple-600 text-3xl shadow-lg">📋</div>
+      </div>
+      <div class="p-6">
+        <div class="flex justify-between items-center mb-2">
+          <h2 class="text-xl font-semibold text-gray-800">Formatted Output</h2>
+          <button onclick="copyToClipboard()" title="Copy to Clipboard" class="text-purple-600 hover:text-purple-800 transition text-2xl">📎</button>
+        </div>
+        <textarea id="output" rows="10" readonly class="w-full p-3 border border-gray-200 rounded-lg bg-gray-50 text-gray-800 resize-y"></textarea>
+        <p id="copiedMsg" class="text-green-500 text-sm mt-2 hidden">✅ Copied to clipboard!</p>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const input = document.getElementById("input");
+    const output = document.getElementById("output");
+    const copyMsg = document.getElementById("copiedMsg");
+
+    input.addEventListener("input", () => {
+      const lines = input.value.trim().split("\n").filter(line => line.trim() !== "");
+      const formatted = lines.map(uuid => `"${uuid.trim()}"`).join(" OR ");
+      output.value = formatted;
+      copyMsg.classList.add("hidden");
+    });
+
+    function copyToClipboard() {
+      output.select();
+      output.setSelectionRange(0, 99999);
+      document.execCommand("copy");
+      copyMsg.classList.remove("hidden");
+      setTimeout(() => copyMsg.classList.add("hidden"), 2000);
+    }
+  </script>
+
+</body>
+</html>
